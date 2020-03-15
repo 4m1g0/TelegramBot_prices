@@ -1,0 +1,27 @@
+# c1 reference catalog
+# c2 current catalog
+# discount % of discount to show alert
+
+def getDiscount(c1, c2, discount, chanelID):
+    updater = Updater(token='*************')
+    i = 0
+    for x1 in list(c1.values()):
+        if x1['id'] not in c2:
+            i += 1
+            continue
+            
+        x2 = c2[x1['id']]
+        if x1['price']*(1-discount/100.0) > x2['price']:
+            print(x2['id'])
+            discount = math.floor((x1['price'] - x2['price'])/x1['price']*100)
+            marker = ''
+            if discount > 30: marker = '⚪️'
+            if discount > 40: marker = '⚫️'
+            if discount > 60: marker = '🔵'
+            if discount > 80: marker = '🔴'
+            message = marker + " " + str(discount) + "%  " + str(x1['price']) + " => " + str(x2['price']) + "$  " + goo_url(x1['uri'])
+            updater.bot.sendMessage(chat_id=chanelID, text=message, timeout=5000)
+     
+    print(str(i))
+    
+  
